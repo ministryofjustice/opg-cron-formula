@@ -1,0 +1,6 @@
+{% set cronjobs = salt['grains.filter_by']({
+  'Ubuntu': {
+    'enabled': False,
+    'jobs': {}
+  }
+}, merge=salt['pillar.get']('cronjobs'), default='Ubuntu') %}
