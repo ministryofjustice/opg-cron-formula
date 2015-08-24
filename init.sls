@@ -1,8 +1,9 @@
 {% from "opg-cron/map.jinja" import cronjobs with context %}
 
-{% if cronjobs.enabled %}
-
 {% for index in cronjobs['jobs'] %}
+
+{% if cronjobs['jobs'][index]['enabled'] %}
+
 cronjob-present-{{index}}:
   cron.present:
     - name: {{ cronjobs['jobs'][index]['command'] }}
@@ -13,15 +14,14 @@ cronjob-present-{{index}}:
     - daymonth: {{ cronjobs['jobs'][index]['daymonth']|default("'*'") }}
     - month: {{ cronjobs['jobs'][index]['month']|default("'*'") }}
     - dayweek: {{ cronjobs['jobs'][index]['dayweek']|default("'*'") }}
-{% endfor %}
 
 {% else %}
 
-{% for index in cronjobs['jobs'] %}
 cronjob-absent-{{index}}:
   cron.absent:
     - identifier: cronjob-{{cronjobs['jobs'][index]['user']}}-{{index}}
     - user: {{ cronjobs['jobs'][index]['user'] }}
-{% endfor %}
 
 {% endif %}
+
+{% endfor %}

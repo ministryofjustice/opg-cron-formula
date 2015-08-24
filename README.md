@@ -5,9 +5,9 @@ Saltstack formula for managing crontabs via pillar data
 
 ```
 cronjobs:
-  enabled: True
   jobs:
     btrfsbalance:
+      enabled: True
       user: root
       hour: '4'
       minute: random
@@ -16,12 +16,13 @@ cronjobs:
       dayweek: "'*'"
       command: /sbin/btrfs fi balance start -dusage=10 /srv
     test:
+      enabled: False
       user: root
       hour: 2
       command: echo "this is a test job"
 ```
 
-The `enabled` key can be set to `False` to remove jobs previously added when it was set to `True`. If there is no pillar data defined at all, `enabled` is treated as `False` but it will not delete any previously added jobs (since it has no `jobs` keys to work from).
+The `enabled` key can be set to `False` to remove jobs previously added when it was set to `True`.
 
 Default values for the following are used when not supplied via pillar:
 
@@ -31,7 +32,7 @@ Default values for the following are used when not supplied via pillar:
 * Month     (Every month of the year)
 * Dayweek   (Every day of the week)
 
-The following pillar values MUST be specified as default values cannot be derived:
+Where pillar data exists, the following values MUST be specified as default values cannot be derived:
 
 * User
 * Command
